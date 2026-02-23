@@ -1,34 +1,33 @@
 import java.util.Scanner;
+import java.util.Stack;
 
-public class PalindromeCheckerApp {
+public class UseCase5PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== Palindrome Checker App - UC4 ===");
+        System.out.println("=== Palindrome Checker App - UC5 ===");
         System.out.print("Enter a string or number: ");
         String original = scanner.nextLine();
 
-        // Remove special characters and convert to lowercase
+        // Clean string: remove non-alphanumeric chars and convert to lowercase
         String cleaned = original.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        // Convert String to Character Array
-        char[] charArray = cleaned.toCharArray();
+        // Use a Stack to store characters
+        Stack<Character> stack = new Stack<>();
 
-        // Two-pointer technique
-        int start = 0;
-        int end = charArray.length - 1;
+        for (int i = 0; i < cleaned.length(); i++) {
+            stack.push(cleaned.charAt(i));  // Push each character
+        }
 
+        // Compare by popping characters from stack
         boolean isPalindrome = true;
-
-        while (start < end) {
-            if (charArray[start] != charArray[end]) {
+        for (int i = 0; i < cleaned.length(); i++) {
+            if (cleaned.charAt(i) != stack.pop()) {
                 isPalindrome = false;
                 break;
             }
-            start++;
-            end--;
         }
 
         // Display result
