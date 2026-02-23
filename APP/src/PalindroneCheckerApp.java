@@ -3,7 +3,7 @@ import java.util.Stack;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class UseCase6PalindromeCheckerApp {
+public class PalindroneCheckerApp {
 
     public static void main(String[] args) {
 
