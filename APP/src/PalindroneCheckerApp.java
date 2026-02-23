@@ -1,30 +1,36 @@
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class UseCase5PalindromeCheckerApp {
+public class UseCase6PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== Palindrome Checker App - UC5 ===");
+        System.out.println("=== Palindrome Checker App - UC6 ===");
         System.out.print("Enter a string or number: ");
         String original = scanner.nextLine();
 
         // Clean string: remove non-alphanumeric chars and convert to lowercase
         String cleaned = original.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        // Use a Stack to store characters
+        // Initialize Queue (FIFO) and Stack (LIFO)
+        Queue<Character> queue = new LinkedList<>();
         Stack<Character> stack = new Stack<>();
 
+        // Enqueue and push characters
         for (int i = 0; i < cleaned.length(); i++) {
-            stack.push(cleaned.charAt(i));  // Push each character
+            char c = cleaned.charAt(i);
+            queue.add(c);  // Enqueue
+            stack.push(c); // Push
         }
 
-        // Compare by popping characters from stack
+        // Compare dequeue vs pop
         boolean isPalindrome = true;
-        for (int i = 0; i < cleaned.length(); i++) {
-            if (cleaned.charAt(i) != stack.pop()) {
+        while (!queue.isEmpty()) {
+            if (!queue.remove().equals(stack.pop())) {
                 isPalindrome = false;
                 break;
             }
