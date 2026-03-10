@@ -1,36 +1,36 @@
 import java.util.Scanner;
-import java.util.Stack;
+import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Queue;
 
-public class PalindroneCheckerApp {
+public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== Palindrome Checker App - UC6 ===");
+        System.out.println("=== Palindrome Checker App - UC7 ===");
         System.out.print("Enter a string or number: ");
         String original = scanner.nextLine();
 
-        // Clean string: remove non-alphanumeric chars and convert to lowercase
+        // Clean string: remove non-alphanumeric characters and convert to lowercase
         String cleaned = original.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        // Initialize Queue (FIFO) and Stack (LIFO)
-        Queue<Character> queue = new LinkedList<>();
-        Stack<Character> stack = new Stack<>();
+        // Initialize Deque
+        Deque<Character> deque = new LinkedList<>();
 
-        // Enqueue and push characters
+        // Insert characters into deque
         for (int i = 0; i < cleaned.length(); i++) {
-            char c = cleaned.charAt(i);
-            queue.add(c);  // Enqueue
-            stack.push(c); // Push
+            deque.addLast(cleaned.charAt(i));
         }
 
-        // Compare dequeue vs pop
+        // Compare front and rear characters
         boolean isPalindrome = true;
-        while (!queue.isEmpty()) {
-            if (!queue.remove().equals(stack.pop())) {
+
+        while (deque.size() > 1) {
+            char front = deque.removeFirst();
+            char rear = deque.removeLast();
+
+            if (front != rear) {
                 isPalindrome = false;
                 break;
             }
