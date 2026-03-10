@@ -1,31 +1,47 @@
 import java.util.Scanner;
+import java.util.Stack;
 
-public class UseCase10PalindromeCheckerApp {
+// Service class that contains palindrome logic
+class PalindromeChecker {
+
+    public boolean checkPalindrome(String input) {
+
+        // Clean the string
+        String cleaned = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        Stack<Character> stack = new Stack<>();
+
+        // Push characters into stack
+        for (int i = 0; i < cleaned.length(); i++) {
+            stack.push(cleaned.charAt(i));
+        }
+
+        // Compare characters
+        for (int i = 0; i < cleaned.length(); i++) {
+            if (cleaned.charAt(i) != stack.pop()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+// Main application class
+public class UseCase11PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== Palindrome Checker App - UC10 ===");
-        System.out.print("Enter a string or sentence: ");
-        String original = scanner.nextLine();
+        System.out.println("=== Palindrome Checker App - UC11 ===");
+        System.out.print("Enter a string or number: ");
+        String input = scanner.nextLine();
 
-        // Normalize string (remove spaces and convert to lowercase)
-        String cleaned = original.replaceAll("\\s+", "").toLowerCase();
+        // Create object of service class
+        PalindromeChecker checker = new PalindromeChecker();
 
-        int start = 0;
-        int end = cleaned.length() - 1;
-        boolean isPalindrome = true;
-
-        // Compare characters
-        while (start < end) {
-            if (cleaned.charAt(start) != cleaned.charAt(end)) {
-                isPalindrome = false;
-                break;
-            }
-            start++;
-            end--;
-        }
+        boolean isPalindrome = checker.checkPalindrome(input);
 
         // Display result
         if (isPalindrome) {
