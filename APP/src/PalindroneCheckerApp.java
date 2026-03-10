@@ -3,25 +3,17 @@ import java.util.Stack;
 import java.util.Deque;
 import java.util.LinkedList;
 
-// Strategy Interface
-interface PalindromeStrategy {
-    boolean checkPalindrome(String input);
-}
+public class UseCase13PalindromeCheckerApp {
 
-// Stack-based strategy
-class StackStrategy implements PalindromeStrategy {
-
-    public boolean checkPalindrome(String input) {
-
-        String cleaned = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-
+    // Stack method
+    public static boolean stackPalindrome(String str) {
         Stack<Character> stack = new Stack<>();
 
-        for (char c : cleaned.toCharArray()) {
+        for (char c : str.toCharArray()) {
             stack.push(c);
         }
 
-        for (char c : cleaned.toCharArray()) {
+        for (char c : str.toCharArray()) {
             if (c != stack.pop()) {
                 return false;
             }
@@ -29,18 +21,12 @@ class StackStrategy implements PalindromeStrategy {
 
         return true;
     }
-}
 
-// Deque-based strategy
-class DequeStrategy implements PalindromeStrategy {
-
-    public boolean checkPalindrome(String input) {
-
-        String cleaned = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-
+    // Deque method
+    public static boolean dequePalindrome(String str) {
         Deque<Character> deque = new LinkedList<>();
 
-        for (char c : cleaned.toCharArray()) {
+        for (char c : str.toCharArray()) {
             deque.addLast(c);
         }
 
@@ -52,42 +38,57 @@ class DequeStrategy implements PalindromeStrategy {
 
         return true;
     }
-}
 
-// Main Application
-public class UseCase12PalindromeCheckerApp {
+    // Recursive method
+    public static boolean recursivePalindrome(String str, int start, int end) {
+
+        if (start >= end) {
+            return true;
+        }
+
+        if (str.charAt(start) != str.charAt(end)) {
+            return false;
+        }
+
+        return recursivePalindrome(str, start + 1, end - 1);
+    }
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== Palindrome Checker App - UC12 ===");
+        System.out.println("=== Palindrome Checker App - UC13 ===");
         System.out.print("Enter a string or number: ");
         String input = scanner.nextLine();
 
-        System.out.println("Choose Strategy:");
-        System.out.println("1. Stack Strategy");
-        System.out.println("2. Deque Strategy");
-        System.out.print("Enter choice: ");
+        // Normalize string
+        String cleaned = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        int choice = scanner.nextInt();
+        // Stack performance
+        long startStack = System.nanoTime();
+        boolean stackResult = stackPalindrome(cleaned);
+        long endStack = System.nanoTime();
 
-        PalindromeStrategy strategy;
+        // Deque performance
+        long startDeque = System.nanoTime();
+        boolean dequeResult = dequePalindrome(cleaned);
+        long endDeque = System.nanoTime();
 
-        if (choice == 1) {
-            strategy = new StackStrategy();
-        } else {
-            strategy = new DequeStrategy();
-        }
+        // Recursive performance
+        long startRec = System.nanoTime();
+        boolean recResult = recursivePalindrome(cleaned, 0, cleaned.length() - 1);
+        long endRec = System.nanoTime();
 
-        boolean isPalindrome = strategy.checkPalindrome(input);
+        // Display results
+        System.out.println("\n--- Results ---");
+        System.out.println("Stack Method: " + stackResult +
+                " | Time: " + (endStack - startStack) + " ns");
 
-        // Display result
-        if (isPalindrome) {
-            System.out.println("Result: It is a Palindrome.");
-        } else {
-            System.out.println("Result: It is NOT a Palindrome.");
-        }
+        System.out.println("Deque Method: " + dequeResult +
+                " | Time: " + (endDeque - startDeque) + " ns");
+
+        System.out.println("Recursive Method: " + recResult +
+                " | Time: " + (endRec - startRec) + " ns");
 
         scanner.close();
     }
